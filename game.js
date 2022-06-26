@@ -1,3 +1,14 @@
+var buttons = Array.from(document.getElementsByTagName("button"));
+
+
+console.log(buttons);
+
+function disableButtons() {
+    buttons.forEach(elem => {
+        elem.disabled = true
+    })
+    console.log("buttons disabled");
+}
 
 function computerPlay() {
     let finalDecision = "";
@@ -57,33 +68,78 @@ function playRound(playerSelection, computerSelection) {
     return result;
 }
 
+function changeScores(roundResult, scores) {
+    let playerScore = scores[0];
+    let computerScore = scores[1];
+    let newScores = [];
+
+    if (roundResult.startsWith("You win!")) {
+        playerScore++;
+    }
+    else if (roundResult.startsWith("You lose!")) {
+        computerScore++;
+    }
+    newScores.push(playerScore);
+    newScores.push(computerScore);
+
+    return newScores;
+}
+
 
 function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-    for (let i = 0; i < 5; i++) {
-        let playerPrompt = prompt("What do you play?")
-        let gameResult = (playRound(playerPrompt, computerPlay()))
-        console.log(gameResult);
-        if (gameResult.includes("You win")) {
-            playerScore++;
-        }
-        else if (gameResult.includes("You lose")) {
-            computerScore++;
-        }
-    }
+    let scores = [0, 0];
+    let gameResult = "";
+    let startGame = false;
+    let gameNum = 1;
     
-    if (playerScore > computerScore) {
-        console.log("Player wins the series!");
-    }
-    else if (computerScore > playerScore) {
-        console.log("Computer wins the series!");
-    }
-    else {
-        console.log("You tied the series!")
-    }
-    console.log(`Player score: ${playerScore}`);
-    console.log(`Computer score: ${computerScore}`);
+    const results = document.querySelector('#results');
+    const resultsContent = document.createElement('div');
+    resultsContent.classList.add('game-results');
+
+    const score = document.querySelector('#score');
+    const scoreContent = document.createElement('div');
+    scoreContent.classList.add('score')
+    
+    let rockbtn = document.getElementById("rock");
+    rockbtn.addEventListener('click', event => {
+        startGame = true;
+        gameResult = playRound("rock", computerPlay());
+        scores = changeScores(gameResult, scores);
+        resultsContent.textContent = `${gameResult}`;
+
+        if(scores[0] >= 5) {
+            scoreContent.textContent = "Player Wins! Reload the page to play again.";
+            disableButtons();
+        }
+        else if(scores[1] >= 5) {
+            scoreContent.textContent = "Computer Wins! Reload the page to play again.";
+            disableButtons();
+        }
+        else {
+        scoreContent.textContent = `Player: ${scores[0]} - Computer: ${scores[1]}`;
+        gameNum++;
+        }
+    });
+
+    let paperbtn = document.getElementById("paper");
+    paperbtn.addEventListener('click', event => {
+        startGame = true;
+        gameResult = (playRound("paper", computerPlay()));
+        resultsContent.textContent = `${gameResult} is the game result`;
+        gameNum++;
+    });
+
+    let scissorsbtn = document.getElementById("scissors");
+    scissorsbtn.addEventListener('click', event => {
+        startgame = true;
+        gameResult = (playRound("scissors", computerPlay()));
+        resultsContent.textContent = `${gameResult} is the game result`;
+        gameNum++;
+    });
+
+    results.appendChild(resultsContent);
+    score.appendChild(scoreContent);
+
 }
 
 game();
