@@ -1,0 +1,13 @@
+.title {
+    display: flex;
+    justify-content: center;
+    font-size:  80px;
+    outline: solid;
+}
+
+.game {
+    margin-top: 20%;
+    display: flex;
+    justify-content: center;
+    outline: solid;
+}
