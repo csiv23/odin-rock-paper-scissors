@@ -1,5 +1,13 @@
 var buttons = Array.from(document.getElementsByTagName("button"));
+const score = document.querySelector('#score');
+const scoreContent = document.createElement('div');
+scoreContent.classList.add('score')
 
+const results = document.querySelector('#results');
+const resultsContent = document.createElement('div');
+resultsContent.classList.add('game-results');
+resultsContent.style.fontSize = '20px';
+resultsContent.style.marginTop = '20px';
 
 console.log(buttons);
 
@@ -86,55 +94,68 @@ function changeScores(roundResult, scores) {
 }
 
 
+function isGameOver(scores, scoreContent) {
+    let gameOver;
+    if (scores[0] >= 5) {
+        scoreContent.textContent = "Player Wins! Reload the page to play again.";
+        disableButtons();
+        gameOver = true;
+    }
+    else if (scores[1] >= 5) {
+        scoreContent.textContent = "Computer Wins! Reload the page to play again.";
+        disableButtons();
+        gameOver = true;
+    }
+    else {
+        gameOver = false;
+    }
+    return gameOver;
+}
+
 function game() {
     let scores = [0, 0];
     let gameResult = "";
     let startGame = false;
     let gameNum = 1;
-    
-    const results = document.querySelector('#results');
-    const resultsContent = document.createElement('div');
-    resultsContent.classList.add('game-results');
 
-    const score = document.querySelector('#score');
-    const scoreContent = document.createElement('div');
-    scoreContent.classList.add('score')
-    
+
+
+
     let rockbtn = document.getElementById("rock");
     rockbtn.addEventListener('click', event => {
         startGame = true;
         gameResult = playRound("rock", computerPlay());
         scores = changeScores(gameResult, scores);
         resultsContent.textContent = `${gameResult}`;
+        if (isGameOver(scores, scoreContent) == false) {
+            scoreContent.textContent = `Player: ${scores[0]} - Computer: ${scores[1]}`;
+            gameNum++;
+        }
 
-        if(scores[0] >= 5) {
-            scoreContent.textContent = "Player Wins! Reload the page to play again.";
-            disableButtons();
-        }
-        else if(scores[1] >= 5) {
-            scoreContent.textContent = "Computer Wins! Reload the page to play again.";
-            disableButtons();
-        }
-        else {
-        scoreContent.textContent = `Player: ${scores[0]} - Computer: ${scores[1]}`;
-        gameNum++;
-        }
     });
 
     let paperbtn = document.getElementById("paper");
     paperbtn.addEventListener('click', event => {
         startGame = true;
-        gameResult = (playRound("paper", computerPlay()));
-        resultsContent.textContent = `${gameResult} is the game result`;
-        gameNum++;
+        gameResult = playRound("paper", computerPlay());
+        scores = changeScores(gameResult, scores);
+        resultsContent.textContent = `${gameResult}`;
+        if (isGameOver(scores, scoreContent) == false) {
+            scoreContent.textContent = `Player: ${scores[0]} - Computer: ${scores[1]}`;
+            gameNum++;
+        }
     });
 
     let scissorsbtn = document.getElementById("scissors");
     scissorsbtn.addEventListener('click', event => {
-        startgame = true;
-        gameResult = (playRound("scissors", computerPlay()));
-        resultsContent.textContent = `${gameResult} is the game result`;
-        gameNum++;
+        startGame = true;
+        gameResult = playRound("scissors", computerPlay());
+        scores = changeScores(gameResult, scores);
+        resultsContent.textContent = `${gameResult}`;
+        if (isGameOver(scores, scoreContent) == false) {
+            scoreContent.textContent = `Player: ${scores[0]} - Computer: ${scores[1]}`;
+            gameNum++;
+        }
     });
 
     results.appendChild(resultsContent);
