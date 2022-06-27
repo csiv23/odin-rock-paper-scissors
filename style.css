@@ -1,13 +1,48 @@
+.document {
+    display: flex;
+    justify-content: center;
+}
+
 .title {
     display: flex;
     justify-content: center;
     font-size:  80px;
     outline: solid;
+    font-family:Verdana;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: fit-content;
+    padding: 1%;
 }
 
 .game {
-    margin-top: 20%;
     display: flex;
     justify-content: center;
-    outline: solid;
+    flex-direction: column;
+    align-items: center;
+    font-family:Verdana;
 }
+
+.options {
+    display: flex;
+    gap: 20px;
+}
+
+#rock, #paper, #scissors {
+    background-color: lightblue;
+    font-size: 20px;
+    font-family:Verdana;
+}
+
+.score {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    font-size: 35px;
+    margin-bottom: 50px;
+    height: 30px;
+    font-family:Verdana;
+    text-align: center;
+}
+
